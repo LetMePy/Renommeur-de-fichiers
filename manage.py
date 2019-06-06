@@ -40,14 +40,17 @@ verbose = args.verbose
 
 # --- Script ---
 
-
-names = sorted(os.listdir(path))
-valid_names = []
-invalid_names = []
+# Loading the list of names to verify
+names = []
+for name in sorted(os.listdir(path)):
+	if os.path.isfile(os.path.join(path, name)):
+		names.append(name)
 if path == '.':
 	names.remove(__file__)
 
-# Charging the list of invalid names
+# Loading the list of invalid names
+valid_names = []
+invalid_names = []
 last_name = '0' * length
 for name in names:
 	if is_valid(clean(name)) and clean(name) == inc(clean(last_name)):
