@@ -21,9 +21,15 @@ inc = lambda s: '0' * (length - len(str(int(s) + 1))) + str(int(s) + 1)
 parser = argparse.ArgumentParser()
 # The path where the files are
 parser.add_argument('path', help='The path where the files are')
-# The length
+# Format the new name
+parser.add_argument('-f', '--format', type=str,
+					help='Format the new name.\
+					Exemple: Episode |i| Season 1 .\
+					|i| will be replaced by the counter.',
+					)
+# The length of the counter
 parser.add_argument('-l', '--length', type=int,
-					help='the length of the new names. default = 4')
+					help='the length of the counter.')
 # Activate the warning message
 parser.add_argument('-v', '--verbose', action='store_true',
 					help='Display a confirmation message')
@@ -36,6 +42,7 @@ if not os.path.exists(path):
 
 length = args.length if args.length else 0
 verbose = args.verbose
+_format = args.format
 
 
 # --- Script ---
@@ -67,7 +74,7 @@ for name in invalid_names:
 	last_name = new_name
 
 	# Adding the extension
-	final_name = new_name + name[name.rfind('.'):]
+	final_name = _format.replace('|i|', new_name) + name[name.rfind('.'):]
 
 	# The user confirm the change
 	if args.verbose:
